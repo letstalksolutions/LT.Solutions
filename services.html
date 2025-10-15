@@ -33,11 +33,13 @@
 
         .service-card-wrapper {
             min-height: 400px;
-            transition: all 0.6s ease;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .service-card-wrapper.flipped {
-            min-height: 700px;
+            min-height: 750px;
+            transform: scale(1.05);
+            z-index: 10;
         }
 
         .service-card {
@@ -51,7 +53,7 @@
         }
 
         .service-card-wrapper.flipped .service-card {
-            transform: rotateY(180deg) scale(1.02);
+            transform: rotateY(180deg);
             cursor: default;
         }
 
@@ -65,8 +67,9 @@
         }
 
         .card-front {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
+            background: rgba(25, 30, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(220, 40, 40, 0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -84,7 +87,7 @@
         .service-number-large {
             font-size: 8rem;
             font-weight: 700;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #DC2828 0%, #FF4444 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -119,11 +122,13 @@
         }
 
         .card-back {
-            background: var(--card-bg);
+            background: rgba(25, 30, 40, 0.95);
+            backdrop-filter: blur(20px);
             border: 2px solid var(--accent-red);
             transform: rotateY(180deg);
             padding: 2.5rem;
             overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(220, 40, 40, 0.3);
         }
 
         .card-back .section-tag {
@@ -132,13 +137,20 @@
         }
 
         .card-back h3 {
-            font-size: 1.75rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
+            color: var(--text-light);
         }
 
         .card-back > p {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .card-back > p:first-of-type {
+            font-size: 1.05rem;
+            color: var(--text-light);
         }
 
         .service-features {
@@ -150,22 +162,23 @@
             align-items: start;
             gap: 1rem;
             margin-bottom: 0.75rem;
-            padding: 0.875rem;
-            background: rgba(220, 40, 40, 0.05);
-            border: 1px solid var(--card-border);
+            padding: 1rem;
+            background: rgba(220, 40, 40, 0.08);
+            border: 1px solid rgba(220, 40, 40, 0.2);
             border-radius: 0.75rem;
             transition: all 0.3s ease;
         }
 
         .feature-item:hover {
             border-color: var(--accent-red);
-            background: rgba(220, 40, 40, 0.1);
+            background: rgba(220, 40, 40, 0.15);
+            transform: translateX(5px);
         }
 
         .feature-icon {
             width: 36px;
             height: 36px;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #DC2828 0%, #FF4444 100%);
             border-radius: 0.5rem;
             display: flex;
             align-items: center;
@@ -179,9 +192,10 @@
         }
 
         .feature-text h4 {
-            font-size: 0.9375rem;
+            font-size: 0.95rem;
             margin-bottom: 0.25rem;
             color: var(--text-light);
+            font-weight: 600;
         }
 
         .feature-text p {
@@ -203,7 +217,7 @@
             right: 1rem;
             width: 36px;
             height: 36px;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #DC2828 0%, #FF4444 100%);
             border: none;
             border-radius: 50%;
             color: white;
@@ -222,7 +236,7 @@
 
         .process-section {
             padding: 6rem 0;
-            background: linear-gradient(180deg, transparent 0%, var(--primary-dark) 100%);
+            background: linear-gradient(180deg, transparent 0%, rgba(15, 20, 30, 0.5) 100%);
         }
 
         .process-grid {
@@ -245,7 +259,7 @@
             right: -1rem;
             width: 2rem;
             height: 2px;
-            background: var(--card-border);
+            background: rgba(220, 40, 40, 0.3);
         }
 
         .process-card:last-child::after {
@@ -255,7 +269,7 @@
         .process-number {
             width: 80px;
             height: 80px;
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #DC2828 0%, #FF4444 100%);
             border-radius: 1rem;
             display: flex;
             align-items: center;
@@ -287,7 +301,8 @@
             }
 
             .service-card-wrapper.flipped {
-                min-height: 650px;
+                min-height: 700px;
+                transform: scale(1);
             }
         }
 
@@ -312,6 +327,10 @@
 
             .card-front h3 {
                 font-size: 1.5rem;
+            }
+
+            .card-back h3 {
+                font-size: 1.75rem;
             }
 
             .process-grid {
@@ -376,6 +395,7 @@
                             <span class="section-tag">Service One</span>
                             <h3>Atlassian Platform Consultation</h3>
                             <p>Expert guidance on Atlassian product selection, implementation, configuration, and optimisation for your specific business needs.</p>
+                            <p>Whether you're just getting started with Atlassian tools or looking to optimise your existing setup, I provide tailored consultation services to help you get the most out of your investment.</p>
                             
                             <div class="service-features">
                                 <div class="feature-item">
@@ -448,6 +468,7 @@
                             <span class="section-tag">Service Two</span>
                             <h3>Workflow Optimisation</h3>
                             <p>Streamline your team's processes with custom workflows, automation rules, and integrations that boost productivity.</p>
+                            <p>I help teams identify bottlenecks and implement solutions that streamline workflows, reduce manual tasks, and improve efficiency.</p>
                             
                             <div class="service-features">
                                 <div class="feature-item">
@@ -520,6 +541,7 @@
                             <span class="section-tag">Service Three</span>
                             <h3>Systems Integration</h3>
                             <p>Connect your Atlassian tools with other business systems for seamless data flow and enhanced collaboration.</p>
+                            <p>I specialise in integrating Atlassian products with your existing business systems to create a cohesive ecosystem where information flows seamlessly between platforms.</p>
                             
                             <div class="service-features">
                                 <div class="feature-item">
