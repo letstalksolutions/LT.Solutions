@@ -17,6 +17,12 @@
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.25);
+	--space-1: 12px;
+	--space-2: 20px;
+	--space-3: 36px;
+	--space-4: 64px;
+	--section-pad: var(--space-4);
+	}
 }
 
 * {
@@ -856,3 +862,21 @@ footer {
         padding: 0.75rem 1rem;
     }
 }
+/* Global vertical rhythm */
+	section	{padding: var(--section-pad) 0;}
+	.section-title	{margin: 0 0 var(--space-3); line-height:1.2}
+
+/* About preview tune-up */
+	.about-preview	{background:#0f1526;} 
+
+/* subtle alt shade on dark */
+	.about-preview .expertise-list li{margin: var(--space-2) 0}
+
+/* Buttons: hover/focus clarity */
+	.btn	{transition: transform .06s ease, box-shadow .06s ease;}
+	.btn:focus	{outline:2px solid #ffffff; outline-offset:2px;}
+	.btn-primary:hover	{transform: translateY(-1px); box-shadow:0 6px 18px rgba(206,0,0,.28);}
+	.btn-secondary:hover	{transform: translateY(-1px); box-shadow:0 6px 18px rgba(255,255,255,.12);}
+
+/* Images: avoid layout shift */
+	img	{max-width:100%; height:auto;}
