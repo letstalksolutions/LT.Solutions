@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Let's Talk Solutions</title>
+    <meta name="description" content="Learn about Andreas Nyberg and his approach to delivering effective Atlassian solutions.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .about-hero {
+            padding: 10rem 0 4rem;
+            text-align: center;
+        }
+
+        .about-hero h1 {
+            margin-bottom: 1rem;
+        }
+
+        .about-content-section {
+            padding: 4rem 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-image-wrapper {
+            position: sticky;
+            top: 6rem;
+        }
+
+        .about-image-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+
+        .about-image-card img {
+            width: 100%;
+            border-radius: 1rem;
+        }
+
+        .about-text h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-section {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, transparent 0%, var(--primary-dark) 100%);
+        }
+
+        .timeline {
+            max-width: 900px;
+            margin: 3rem auto 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--card-border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 80px;
+            margin-bottom: 4rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            border: 4px solid var(--background-dark);
+        }
+
+        .timeline-year {
+            position: absolute;
+            left: 0;
+            top: -8px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--accent-red);
+            font-family: 'Space Grotesk', sans-serif;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        .timeline-content:hover {
+            transform: translateX(8px);
+            border-color: var(--accent-red);
+        }
+
+        .timeline-content h3 {
+            margin-bottom: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .timeline-content p {
+            margin: 0;
+        }
+
+        .expertise-section {
+            padding: 6rem 0;
+        }
+
+        .expertise-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 3rem auto 0;
+        }
+
+        .expertise-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        .expertise-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-red);
+        }
+
+        .expertise-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .expertise-card h3 {
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .expertise-percentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-red);
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 992px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-image-wrapper {
+                position: static;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .expertise-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                padding-left: 60px;
+            }
+
+            .timeline-dot {
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .about-hero {
+                padding: 8rem 0 3rem;
+            }
+
+            .timeline-year {
+                writing-mode: initial;
+                transform: none;
+                top: -2rem;
+                left: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/final-logo-stacked.png" alt="Let's Talk Solutions Logo">
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active"><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="about-hero">
+        <div class="container">
+            <span class="hero-tag">About Me</span>
+            <h1>Building Smarter, <span class="gradient-text">Not Just Faster</span></h1>
+            <p>From firefighting to strategic growth—that's the journey I help teams make.</p>
+        </div>
+    </section>
+
+    <section class="about-content-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image-wrapper">
+                    <div class="about-image-card">
+                        <img src="assets/Andreas.png" alt="Andreas Nyberg">
+                    </div>
+                </div>
+
+                <div class="about-text">
+                    <h2>Why Should You Work With Me?</h2>
+                    <p><strong>Because I've been there.</strong></p>
+                    
+                    <p>Tools breaking, deadlines closing in, and <em>'survival-mode fixes'</em> just about keeping things afloat.</p>
+                    
+                    <p>We made it work—but after years of experience, I stepped back and asked: <em>what if we stopped firefighting and started building smarter?</em></p>
+                    
+                    <p>That's the space I work in now.</p>
+                    
+                    <p>I help teams get more from the tools, systems, and processes they already have—by leaning into integrations and surfacing new or overlooked features that can drive real efficiency and impact.</p>
+                    
+                    <p><strong>And yes, I use AI—confidently.</strong></p>
+                    
+                    <p>Because the right tech doesn't replace us. It helps us stay objective, unlock ideas, remove bottlenecks, and free up time for the work that really matters.</p>
+                    
+                    <p>I'm not a one-man band, but a part of a modern, lean, and smart setup.</p>
+                    
+                    <p>Now, I use my experience and platform knowledge to help teams focus on what truly moves the needle.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="timeline-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">My Journey</span>
+                <h2>Experience Over Time</h2>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2017</div>
+                    <div class="timeline-content">
+                        <h3>Atlassian Specialisation</h3>
+                        <p>Started specialising in Atlassian products, focusing on Jira and Confluence implementations for teams of all sizes.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2020</div>
+                    <div class="timeline-content">
+                        <h3>Advanced Customisation & Integration</h3>
+                        <p>Deepened expertise in advanced Atlassian customisations and integrations, expanding service offerings to include complex system implementations and bespoke solutions.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-content">
+                        <h3>AI Integration</h3>
+                        <p>Expanded services to include AI integration with Atlassian tools, helping teams leverage the power of artificial intelligence to enhance productivity and decision-making.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2025</div>
+                    <div class="timeline-content">
+                        <h3>Workflow Optimisation</h3>
+                        <p>Currently focusing on comprehensive workflow optimisation, helping teams streamline their processes and maximise efficiency across their entire Atlassian ecosystem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="expertise-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Expertise</span>
+                <h2>What I Bring to the Table</h2>
+            </div>
+
+            <div class="expertise-grid">
+                <div class="expertise-card">
+                    <div class="expertise-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>Atlassian Platform</h3>
+                    <div class="expertise-percentage">95%</div>
+                    <p>Deep expertise across the entire Atlassian suite, from Jira to Confluence and beyond.</p>
+                </div>
+
+                <div class="expertise-card">
+                    <div class="expertise-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Workflow Automation</h3>
+                    <div class="expertise-percentage">90%</div>
+                    <p>Creating intelligent automations that eliminate repetitive tasks and boost productivity.</p>
+                </div>
+
+                <div class="expertise-card">
+                    <div class="expertise-icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <h3>Systems Integration</h3>
+                    <div class="expertise-percentage">85%</div>
+                    <p>Seamlessly connecting Atlassian tools with your existing business systems.</p>
+                </div>
+
+                <div class="expertise-card">
+                    <div class="expertise-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Implementation</h3>
+                    <div class="expertise-percentage">80%</div>
+                    <p>Leveraging AI to enhance decision-making and streamline processes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Optimise Your Atlassian Ecosystem?</h2>
+                <p>Let's work together to unlock the full potential of your tools and transform how your team collaborates.</p>
+                <a href="contact.html" class="btn btn-primary">
+                    Start the Conversation
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="assets/final-logo-icon.png" alt="Let's Talk Solutions Logo" class="footer-logo">
+                    <p>Hands-on Atlassian expertise, designed to scale.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="services.html">Services</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <ul>
+                            <li><a href="mailto:contact@letstalksolutions.co.uk">contact@letstalksolutions.co.uk</a></li>
+                            <li>London, United Kingdom</li>
+                        </ul>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/andreas-l-a-nyberg" target="_blank" aria-label="LinkedIn">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="https://github.com/letstalksolutions" target="_blank" aria-label="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Let's Talk Solutions Limited. All rights reserved.</p>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
