@@ -1,734 +1,383 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services - Let's Talk Solutions</title>
-    <meta name="description" content="Explore Atlassian platform consultation, workflow optimisation and systems integration services.">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .services-hero {
-            padding: 10rem 0 4rem;
-            text-align: center;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services - Let's Talk Solutions</title>
+  <meta name="description" content="Explore Atlassian platform consultation, workflow optimisation and systems integration services." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* --- Page-specific tweaks (merged) --- */
+    .services-hero { padding: 10rem 0 4rem; text-align: center; }
+    .services-hero h1 { margin-bottom: 1rem; }
+    .service-detail-section { padding: 4rem 0; }
 
-        .services-hero h1 {
-            margin-bottom: 1rem;
-        }
+    /* Responsive, robust grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      perspective: 2000px;
+    }
 
-        .service-detail-section {
-            padding: 4rem 0;
-        }
+    .service-card-wrapper { min-height: 420px; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .service-card-wrapper.flipped { min-height: 760px; transform: scale(1.02); z-index: 10; }
 
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            perspective: 2000px;
-        }
+    .service-card {
+      position: relative; width: 100%; height: 100%; min-height: 420px;
+      transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+    }
+    .service-card-wrapper.flipped .service-card { transform: rotateY(180deg); -webkit-transform: rotateY(180deg); }
 
-        .service-card-wrapper {
-            min-height: 400px;
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
+    .card-face {
+      position: absolute; width: 100%; height: 100%;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: 1.5rem; overflow: hidden;
+    }
+    .card-front {
+      background: rgba(25,30,40,0.6);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(220,40,40,0.2);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 3rem; transition: all 0.3s ease; text-align: center;
+    }
+    .card-front:hover { border-color: var(--accent-red); transform: translateY(-6px); box-shadow: 0 12px 40px rgba(220,40,40,0.2); }
 
-        .service-card-wrapper.flipped {
-            min-height: 750px;
-            transform: scale(1.05);
-            z-index: 10;
-        }
+    .service-number-large {
+      font-size: 7rem; font-weight: 700;
+      background: linear-gradient(135deg,#DC2828 0%,#FF4444 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      font-family: 'Space Grotesk',sans-serif; line-height: 1; margin-bottom: 1.25rem;
+    }
 
-        .service-card {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            min-height: 400px;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
+    .card-front h3 {
+      font-size: 1.55rem; line-height: 1.2; margin: 0;
+      max-width: 90%;
+      text-wrap: balance;
+      overflow-wrap: anywhere;
+      hyphens: auto;
+    }
 
-        .service-card-wrapper.flipped .service-card {
-            transform: rotateY(180deg);
-            cursor: default;
-        }
+    .card-front .tap-hint {
+      margin-top: 1.75rem; font-size: 0.9rem; color: var(--text-muted);
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .card-front .tap-hint i { color: var(--accent-red); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
 
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 1.5rem;
-            overflow: hidden;
-        }
+    .card-back {
+      background: rgba(25,30,40,0.95);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 2px solid var(--accent-red);
+      transform: rotateY(180deg);
+      padding: 2.5rem;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(220,40,40,0.3);
+    }
+    .card-back .section-tag { display: inline-block; margin-bottom: 1rem; }
+    .card-back h3 { font-size: 1.9rem; margin-bottom: 1rem; color: var(--text-light); }
+    .card-back > p { margin-bottom: 1rem; line-height: 1.6; color: var(--text-muted); }
+    .card-back > p:first-of-type { font-size: 1.05rem; color: var(--text-light); }
 
-        .card-front {
-            background: rgba(25, 30, 40, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(220, 40, 40, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem;
-            transition: all 0.3s ease;
-        }
+    .service-features { margin: 1.25rem 0; }
+    .feature-item {
+      display: flex; align-items: start; gap: 1rem; margin-bottom: 0.75rem; padding: 1rem;
+      background: rgba(220,40,40,0.08); border: 1px solid rgba(220,40,40,0.2);
+      border-radius: 0.75rem; transition: all 0.3s ease;
+    }
+    .feature-item:hover { border-color: var(--accent-red); background: rgba(220,40,40,0.15); transform: translateX(4px); }
+    .feature-icon {
+      width: 36px; height: 36px; background: linear-gradient(135deg,#DC2828 0%,#FF4444 100%);
+      border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.9rem;
+    }
+    .feature-text { flex: 1; }
+    .feature-text h4 { font-size: 0.95rem; margin-bottom: 0.25rem; color: var(--text-light); font-weight: 600; }
+    .feature-text p { font-size: 0.9rem; margin: 0; color: var(--text-muted); line-height: 1.45; }
 
-        .card-front:hover {
-            border-color: var(--accent-red);
-            transform: translateY(-8px);
-            box-shadow: 0 12px 40px rgba(220, 40, 40, 0.2);
-        }
+    .card-back .btn { width: 100%; justify-content: center; margin-top: 1.25rem; }
 
-        .service-number-large {
-            font-size: 8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #DC2828 0%, #FF4444 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-family: 'Space Grotesk', sans-serif;
-            line-height: 1;
-            margin-bottom: 1.5rem;
-        }
+    .close-card {
+      position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px;
+      background: linear-gradient(135deg,#DC2828 0%,#FF4444 100%);
+      border: none; border-radius: 50%; color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease; z-index: 10;
+    }
+    .close-card:hover { transform: rotate(90deg); box-shadow: 0 4px 12px rgba(220,40,40,0.4); }
 
-        .card-front h3 {
-            font-size: 1.75rem;
-            text-align: center;
-            margin: 0;
-        }
+    .process-section { padding: 6rem 0; background: linear-gradient(180deg,transparent 0%,rgba(15,20,30,0.5) 100%); }
+    .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 1000px; margin: 3rem auto 0; }
+    .process-card { text-align: center; position: relative; }
+    .process-card::after { content: ''; position: absolute; top: 40px; right: -1rem; width: 2rem; height: 2px; background: rgba(220,40,40,0.3); }
+    .process-card:last-child::after { display: none; }
+    .process-number {
+      width: 80px; height: 80px; background: linear-gradient(135deg,#DC2828 0%,#FF4444 100%);
+      border-radius: 1rem; display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif; margin: 0 auto 1.5rem;
+    }
+    .process-card h3 { font-size: 1.125rem; margin-bottom: 0.75rem; }
+    .process-card p { font-size: 0.9375rem; margin: 0; }
 
-        .card-front .tap-hint {
-            margin-top: 2rem;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .card-front .tap-hint i {
-            color: var(--accent-red);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .card-back {
-            background: rgba(25, 30, 40, 0.95);
-            backdrop-filter: blur(20px);
-            border: 2px solid var(--accent-red);
-            transform: rotateY(180deg);
-            padding: 2.5rem;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(220, 40, 40, 0.3);
-        }
-
-        .card-back .section-tag {
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-
-        .card-back h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--text-light);
-        }
-
-        .card-back > p {
-            margin-bottom: 1rem;
-            line-height: 1.6;
-            color: var(--text-muted);
-        }
-
-        .card-back > p:first-of-type {
-            font-size: 1.05rem;
-            color: var(--text-light);
-        }
-
-        .service-features {
-            margin: 1.5rem 0;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: start;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-            padding: 1rem;
-            background: rgba(220, 40, 40, 0.08);
-            border: 1px solid rgba(220, 40, 40, 0.2);
-            border-radius: 0.75rem;
-            transition: all 0.3s ease;
-        }
-
-        .feature-item:hover {
-            border-color: var(--accent-red);
-            background: rgba(220, 40, 40, 0.15);
-            transform: translateX(5px);
-        }
-
-        .feature-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #DC2828 0%, #FF4444 100%);
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 0.875rem;
-        }
-
-        .feature-text {
-            flex: 1;
-        }
-
-        .feature-text h4 {
-            font-size: 0.95rem;
-            margin-bottom: 0.25rem;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        .feature-text p {
-            font-size: 0.875rem;
-            margin: 0;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        .card-back .btn {
-            width: 100%;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
-
-        .close-card {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #DC2828 0%, #FF4444 100%);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .close-card:hover {
-            transform: rotate(90deg);
-            box-shadow: 0 4px 12px rgba(220, 40, 40, 0.4);
-        }
-
-        .process-section {
-            padding: 6rem 0;
-            background: linear-gradient(180deg, transparent 0%, rgba(15, 20, 30, 0.5) 100%);
-        }
-
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 3rem auto 0;
-        }
-
-        .process-card {
-            text-align: center;
-            position: relative;
-        }
-
-        .process-card::after {
-            content: '';
-            position: absolute;
-            top: 40px;
-            right: -1rem;
-            width: 2rem;
-            height: 2px;
-            background: rgba(220, 40, 40, 0.3);
-        }
-
-        .process-card:last-child::after {
-            display: none;
-        }
-
-        .process-number {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #DC2828 0%, #FF4444 100%);
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            font-weight: 700;
-            font-family: 'Space Grotesk', sans-serif;
-            margin: 0 auto 1.5rem;
-        }
-
-        .process-card h3 {
-            font-size: 1.125rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .process-card p {
-            font-size: 0.9375rem;
-            margin: 0;
-        }
-
-        @media (max-width: 1200px) {
-            .services-grid {
-                grid-template-columns: 1fr;
-                max-width: 600px;
-            }
-
-            .service-card-wrapper {
-                min-height: 350px;
-            }
-
-            .service-card-wrapper.flipped {
-                min-height: 700px;
-                transform: scale(1);
-            }
-        }
-
-        @media (max-width: 992px) {
-            .process-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .process-card::after {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .services-hero {
-                padding: 8rem 0 3rem;
-            }
-
-            .service-number-large {
-                font-size: 6rem;
-            }
-
-            .card-front h3 {
-                font-size: 1.5rem;
-            }
-
-            .card-back h3 {
-                font-size: 1.75rem;
-            }
-
-            .process-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    @media (max-width: 1200px) {
+      .service-card-wrapper { min-height: 380px; }
+      .service-card-wrapper.flipped { min-height: 700px; transform: none; }
+      .service-number-large { font-size: 6.25rem; }
+      .card-front h3 { font-size: 1.45rem; }
+    }
+    @media (max-width: 992px) {
+      .process-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-card::after { display: none; }
+    }
+    @media (max-width: 768px) {
+      .services-hero { padding: 8rem 0 3rem; }
+      .services-grid { gap: 1.5rem; }
+      .service-card-wrapper { min-height: 360px; }
+      .service-card-wrapper.flipped { min-height: 680px; }
+      .service-number-large { font-size: 5.5rem; }
+      .card-front h3 { font-size: 1.35rem; }
+      .card-back h3 { font-size: 1.7rem; }
+      .process-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">
-                <a href="index.html">
-                    <img src="assets/final-logo-stacked.png" alt="Let's Talk Solutions Logo">
-                </a>
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li class="active"><a href="services.html">Services</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-                <div class="mobile-menu-btn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </nav>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="assets/final-logo-stacked.png" alt="Let's Talk Solutions Logo" />
+        </a>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li class="active"><a href="services.html">Services</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="mobile-menu-btn">
+          <span></span><span></span><span></span>
         </div>
-    </header>
+      </nav>
+    </div>
+  </header>
 
-    <section class="services-hero">
-        <div class="container">
-            <span class="hero-tag">What I Offer</span>
-            <h1>Services Designed <span class="gradient-text">to Scale</span></h1>
-            <p>Comprehensive Atlassian consulting tailored to your team's specific needs.</p>
+  <section class="services-hero">
+    <div class="container">
+      <span class="hero-tag">What I Offer</span>
+      <h1>Services Designed <span class="gradient-text">to Scale</span></h1>
+      <p>Comprehensive Atlassian consulting tailored to your team's specific needs.</p>
+    </div>
+  </section>
+
+  <section class="service-detail-section">
+    <div class="container">
+      <div class="services-grid">
+        <!-- Service Card 1 -->
+        <div class="service-card-wrapper" data-card="1">
+          <div class="service-card">
+            <div class="card-face card-front" role="button" aria-expanded="false" tabindex="0">
+              <div class="service-number-large">01</div>
+              <h3>Atlassian Platform Consultation</h3>
+              <div class="tap-hint"><i class="fas fa-hand-pointer"></i><span>Click to explore</span></div>
+            </div>
+            <div class="card-face card-back">
+              <button class="close-card" aria-label="Close card"><i class="fas fa-times"></i></button>
+              <span class="section-tag">Service One</span>
+              <h3>Atlassian Platform Consultation</h3>
+              <p>Expert guidance on Atlassian product selection, implementation, configuration, and optimisation for your specific business needs.</p>
+              <p>Whether you're just getting started with Atlassian tools or looking to optimise your existing setup, I provide tailored consultation services to help you get the most out of your investment.</p>
+              <div class="service-features">
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-compass"></i></div><div class="feature-text"><h4>Product Selection</h4><p>Guidance based on your specific requirements and goals</p></div></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-rocket"></i></div><div class="feature-text"><h4>Implementation</h4><p>Careful planning and execution of your Atlassian setup</p></div></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-sliders-h"></i></div><div class="feature-text"><h4>Custom Configuration</h4><p>Tailored to match your unique workflows and processes</p></div></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-chart-line"></i></div><div class="feature-text"><h4>Performance Optimisation</h4><p>Enhance existing installations for maximum efficiency</p></div></div>
+              </div>
+              <a href="contact.html" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
         </div>
-    </section>
 
-    <section class="service-detail-section">
-        <div class="container">
-            <div class="services-grid">
-                <!-- Service Card 1 -->
-                <div class="service-card-wrapper" data-card="1">
-                    <div class="service-card">
-                        <!-- Front of Card -->
-                        <div class="card-face card-front">
-                            <div class="service-number-large">01</div>
-                            <h3>Atlassian Platform Consultation</h3>
-                            <div class="tap-hint">
-                                <i class="fas fa-hand-pointer"></i>
-                                <span>Click to explore</span>
-                            </div>
-                        </div>
-
-                        <!-- Back of Card -->
-                        <div class="card-face card-back">
-                            <button class="close-card" aria-label="Close card">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <span class="section-tag">Service One</span>
-                            <h3>Atlassian Platform Consultation</h3>
-                            <p>Expert guidance on Atlassian product selection, implementation, configuration, and optimisation for your specific business needs.</p>
-                            <p>Whether you're just getting started with Atlassian tools or looking to optimise your existing setup, I provide tailored consultation services to help you get the most out of your investment.</p>
-                            
-                            <div class="service-features">
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-compass"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Product Selection</h4>
-                                        <p>Guidance based on your specific requirements and goals</p>
-                                    </div>
-                                </div>
-
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-rocket"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Implementation</h4>
-                                        <p>Careful planning and execution of your Atlassian setup</p>
-                                    </div>
-                                </div>
-
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-sliders-h"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Custom Configuration</h4>
-                                        <p>Tailored to match your unique workflows and processes</p>
-                                    </div>
-                                </div>
-
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-chart-line"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Performance Optimisation</h4>
-                                        <p>Enhance existing installations for maximum efficiency</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <a href="contact.html" class="btn btn-primary">
-                                Get Started
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service Card 2 -->
-                <div class="service-card-wrapper" data-card="2">
-                    <div class="service-card">
-                        <!-- Front of Card -->
-                        <div class="card-face card-front">
-                            <div class="service-number-large">02</div>
-                            <h3>Workflow Optimisation</h3>
-                            <div class="tap-hint">
-                                <i class="fas fa-hand-pointer"></i>
-                                <span>Click to explore</span>
-                            </div>
-                        </div>
-
-                        <!-- Back of Card -->
-                        <div class="card-face card-back">
-                            <button class="close-card" aria-label="Close card">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <span class="section-tag">Service Two</span>
-                            <h3>Workflow Optimisation</h3>
-                            <p>Streamline your team's processes with custom workflows, automation rules, and integrations that boost productivity.</p>
-                            <p>I help teams identify bottlenecks and implement solutions that streamline workflows, reduce manual tasks, and improve efficiency.</p>
-                            
-                            <div class="service-features">
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-search"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Workflow Analysis</h4>
-                                        <p>Identify bottlenecks and inefficiencies</p>
-                                    </div>
-                                </div>
-
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-drafting-compass"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Custom Workflow Design</h4>
-                                        <p>Tailored solutions for your team</p>
-                                    </div>
-                                </div>
-
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-magic"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Automation Rules</h4>
-                                        <p>Reduce manual tasks dramatically</p>
-                                    </div>
-                                </div>
-
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-sync"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Continuous Improvement</h4>
-                                        <p>Ongoing optimisation strategies</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <a href="contact.html" class="btn btn-primary">
-                                Get Started
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service Card 3 -->
-                <div class="service-card-wrapper" data-card="3">
-                    <div class="service-card">
-                        <!-- Front of Card -->
-                        <div class="card-face card-front">
-                            <div class="service-number-large">03</div>
-                            <h3>Systems Integration</h3>
-                            <div class="tap-hint">
-                                <i class="fas fa-hand-pointer"></i>
-                                <span>Click to explore</span>
-                            </div>
-                        </div>
-
-                        <!-- Back of Card -->
-                        <div class="card-face card-back">
-                            <button class="close-card" aria-label="Close card">
-                                <i class="fas fa-times"></i>
-                            </button>
-                            <span class="section-tag">Service Three</span>
-                            <h3>Systems Integration</h3>
-                            <p>Connect your Atlassian tools with other business systems for seamless data flow and enhanced collaboration.</p>
-                            <p>I specialise in integrating Atlassian products with your existing business systems to create a cohesive ecosystem where information flows seamlessly between platforms.</p>
-                            
-                            <div class="service-features">
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-clipboard-check"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Integration Assessment</h4>
-                                        <p>Planning and strategy for seamless connections</p>
-                                    </div>
-                                </div>
-
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-code"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>API Implementation</h4>
-                                        <p>Custom webhook and API integrations</p>
-                                    </div>
-                                </div>
-
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-puzzle-piece"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Third-Party Apps</h4>
-                                        <p>Selection and configuration of marketplace solutions</p>
-                                    </div>
-                                </div>
-
-                                <div class="feature-item">
-                                    <div class="feature-icon">
-                                        <i class="fas fa-exchange-alt"></i>
-                                    </div>
-                                    <div class="feature-text">
-                                        <h4>Data Synchronisation</h4>
-                                        <p>Ensure accurate, real-time data flow between systems</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <a href="contact.html" class="btn btn-primary">
-                                Get Started
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        <!-- Service Card 2 -->
+        <div class="service-card-wrapper" data-card="2">
+          <div class="service-card">
+            <div class="card-face card-front" role="button" aria-expanded="false" tabindex="0">
+              <div class="service-number-large">02</div>
+              <h3>Workflow Optimisation</h3>
+              <div class="tap-hint"><i class="fas fa-hand-pointer"></i><span>Click to explore</span></div>
             </div>
+            <div class="card-face card-back">
+              <button class="close-card" aria-label="Close card"><i class="fas fa-times"></i></button>
+              <span class="section-tag">Service Two</span>
+              <h3>Workflow Optimisation</h3>
+              <p>Streamline your team's processes with custom workflows, automation rules, and integrations that boost productivity.</p>
+              <p>I help teams identify bottlenecks and implement solutions that streamline workflows, reduce manual tasks, and improve efficiency.</p>
+              <div class="service-features">
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-search"></i></div><div class="feature-text"><h4>Workflow Analysis</h4><p>Identify bottlenecks and inefficiencies</p></div></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-drafting-compass"></i></div><div class="feature-text"><h4>Custom Workflow Design</h4><p>Tailored solutions for your team</p></div></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-magic"></i></div><div class="feature-text"><h4>Automation Rules</h4><p>Reduce manual tasks dramatically</p></div></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-sync"></i></div><div class="feature-text"><h4>Continuous Improvement</h4><p>Ongoing optimisation strategies</p></div></div>
+              </div>
+              <a href="contact.html" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
         </div>
-    </section>
 
-    <section class="process-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">My Approach</span>
-                <h2>How We'll Work Together</h2>
-                <p>A structured process to ensure successful outcomes for every project.</p>
+        <!-- Service Card 3 -->
+        <div class="service-card-wrapper" data-card="3">
+          <div class="service-card">
+            <div class="card-face card-front" role="button" aria-expanded="false" tabindex="0">
+              <div class="service-number-large">03</div>
+              <h3>Systems Integration</h3>
+              <div class="tap-hint"><i class="fas fa-hand-pointer"></i><span>Click to explore</span></div>
             </div>
-
-            <div class="process-grid">
-                <div class="process-card">
-                    <div class="process-number">1</div>
-                    <h3>Discover</h3>
-                    <p>Understanding your needs, challenges, and goals through consultation.</p>
-                </div>
-
-                <div class="process-card">
-                    <div class="process-number">2</div>
-                    <h3>Plan</h3>
-                    <p>Developing a tailored strategy and roadmap for implementation.</p>
-                </div>
-
-                <div class="process-card">
-                    <div class="process-number">3</div>
-                    <h3>Implement</h3>
-                    <p>Executing the plan with attention to detail and best practices.</p>
-                </div>
-
-                <div class="process-card">
-                    <div class="process-number">4</div>
-                    <h3>Optimise</h3>
-                    <p>Refining the solution based on feedback and measuring results.</p>
-                </div>
+            <div class="card-face card-back">
+              <button class="close-card" aria-label="Close card"><i class="fas fa-times"></i></button>
+              <span class="section-tag">Service Three</span>
+              <h3>Systems Integration</h3>
+              <p>Connect your Atlassian tools with other business systems for seamless data flow and enhanced collaboration.</p>
+              <p>I specialise in integrating Atlassian products with your existing business systems to create a cohesive ecosystem where information flows seamlessly between platforms.</p>
+              <div class="service-features">
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-clipboard-check"></i></div><div class="feature-text"><h4>Integration Assessment</h4><p>Planning and strategy for seamless connections</p></div></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-code"></i></div><div class="feature-text"><h4>API Implementation</h4><p>Custom webhook and API integrations</p></div></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-puzzle-piece"></i></div><div class="feature-text"><h4>Third-Party Apps</h4><p>Selection and configuration of marketplace solutions</p></div></div>
+                <div class="feature-item"><div class="feature-icon"><i class="fas fa-exchange-alt"></i></div><div class="feature-text"><h4>Data Synchronisation</h4><p>Ensure accurate, real-time data flow between systems</p></div></div>
+              </div>
+              <a href="contact.html" class="btn btn-primary">Get Started <i class="fas fa-arrow-right"></i></a>
             </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <section class="cta">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Optimise Your Atlassian Ecosystem?</h2>
-                <p>Let's work together to unlock the full potential of your tools and transform how your team collaborates.</p>
-                <a href="contact.html" class="btn btn-primary">
-                    Start the Conversation
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
+  <section class="process-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">My Approach</span>
+        <h2>How We'll Work Together</h2>
+        <p>A structured process to ensure successful outcomes for every project.</p>
+      </div>
+      <div class="process-grid">
+        <div class="process-card">
+          <div class="process-number">1</div>
+          <h3>Discover</h3>
+          <p>Understanding your needs, challenges, and goals through consultation.</p>
         </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <img src="assets/final-logo-icon.png" alt="Let's Talk Solutions Logo" class="footer-logo">
-                    <p>Hands-on Atlassian expertise, designed to scale.</p>
-                </div>
-                
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Navigation</h4>
-                        <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="services.html">Services</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="footer-column">
-                        <h4>Connect</h4>
-                        <ul>
-                            <li><a href="mailto:contact@letstalksolutions.co.uk">contact@letstalksolutions.co.uk</a></li>
-                            <li>London, United Kingdom</li>
-                        </ul>
-                        <div class="social-links">
-                            <a href="https://www.linkedin.com/in/andreas-l-a-nyberg" target="_blank" aria-label="LinkedIn">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                            <a href="https://github.com/letstalksolutions" target="_blank" aria-label="GitHub">
-                                <i class="fab fa-github"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Let's Talk Solutions Limited. All rights reserved.</p>
-                <a href="privacy.html">Privacy Policy</a>
-            </div>
+        <div class="process-card">
+          <div class="process-number">2</div>
+          <h3>Plan</h3>
+          <p>Developing a tailored strategy and roadmap for implementation.</p>
         </div>
-    </footer>
+        <div class="process-card">
+          <div class="process-number">3</div>
+          <h3>Implement</h3>
+          <p>Executing the plan with attention to detail and best practices.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-number">4</div>
+          <h3>Optimise</h3>
+          <p>Refining the solution based on feedback and measuring results.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
-    <script>
-        // Service card flip functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const cardWrappers = document.querySelectorAll('.service-card-wrapper');
-            
-            cardWrappers.forEach(wrapper => {
-                const card = wrapper.querySelector('.service-card');
-                const closeBtn = wrapper.querySelector('.close-card');
-                const cardFront = wrapper.querySelector('.card-front');
-                
-                // Flip card on front click
-                cardFront.addEventListener('click', function() {
-                    // Close any other open cards first
-                    cardWrappers.forEach(w => {
-                        if (w !== wrapper) {
-                            w.classList.remove('flipped');
-                        }
-                    });
-                    
-                    // Flip this card
-                    wrapper.classList.add('flipped');
-                });
-                
-                // Close card on close button click
-                closeBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    wrapper.classList.remove('flipped');
-                });
-            });
-            
-            // Close cards when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.service-card-wrapper')) {
-                    cardWrappers.forEach(wrapper => {
-                        wrapper.classList.remove('flipped');
-                    });
-                }
-            });
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Optimise Your Atlassian Ecosystem?</h2>
+        <p>Let's work together to unlock the full potential of your tools and transform how your team collaborates.</p>
+        <a href="contact.html" class="btn btn-primary">Start the Conversation <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img src="assets/final-logo-icon.png" alt="Let's Talk Solutions Logo" class="footer-logo" />
+          <p>Hands-on Atlassian expertise, designed to scale.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Navigation</h4>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Connect</h4>
+            <ul>
+              <li><a href="mailto:contact@letstalksolutions.co.uk">contact@letstalksolutions.co.uk</a></li>
+              <li>London, United Kingdom</li>
+            </ul>
+            <div class="social-links">
+              <a href="https://www.linkedin.com/in/andreas-l-a-nyberg" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+              <a href="https://github.com/letstalksolutions" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Let's Talk Solutions Limited. All rights reserved.</p>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Accessible, single flip logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const wrappers = document.querySelectorAll('.service-card-wrapper');
+      function closeAll() {
+        wrappers.forEach(w => {
+          w.classList.remove('flipped');
+          const f = w.querySelector('.card-front');
+          if (f) f.setAttribute('aria-expanded','false');
         });
-    </script>
+      }
+      wrappers.forEach(wrapper => {
+        const front = wrapper.querySelector('.card-front');
+        const closeBtn = wrapper.querySelector('.close-card');
+        if (front) {
+          front.addEventListener('click', () => {
+            wrappers.forEach(w => { if (w !== wrapper) {
+              w.classList.remove('flipped');
+              const f = w.querySelector('.card-front');
+              if (f) f.setAttribute('aria-expanded','false');
+            }});
+            wrapper.classList.add('flipped');
+            front.setAttribute('aria-expanded','true');
+          });
+          front.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); front.click(); }
+          });
+        }
+        if (closeBtn) {
+          closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            wrapper.classList.remove('flipped');
+            if (front) front.setAttribute('aria-expanded','false');
+          });
+        }
+      });
+      document.addEventListener('click', (e) => { if (!e.target.closest('.service-card-wrapper')) closeAll(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
+    });
+  </script>
+
+  <!-- Global site script (minified) -->
+  <script src="script.min.js"></script>
 </body>
 </html>
